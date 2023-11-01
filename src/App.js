@@ -12,8 +12,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="profil/:id" element={<Profil />} />
-        <Route path="about" element={<Connexion />} />
+        <Route path="/profil/:id" element={<Profil />} />
+        <Route path="/connexion" element={<Connexion />} />
         <Route path="*" element={<Error404 />} />
       </Route>
     </Routes>
