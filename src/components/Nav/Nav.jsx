@@ -11,9 +11,9 @@ export default function Nav() {
             </NavLink>
             <nav className="nav">
                 {/* A modifier !!! */}
-                <NavLink to="/" className="link" activeclassname="active">Tony</NavLink>
+                <NavLink to="/profile" className="link" activeclassname="active">Tony</NavLink>
 
-                <NavLink to="/connexion" className="link" activeclassname="active">Sing Out</NavLink>
+                <NavLink to="/login" className="link" activeclassname="active">Sing Out</NavLink>
             </nav>
         </div>
     );
