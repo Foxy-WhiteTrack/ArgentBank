@@ -73,3 +73,19 @@
         width: 200px;
     }
 }
+
+.edit {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.edit input {
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+.cancel {
+    border-color: #bc2200;
+    background-color: #bc2200;
+}
