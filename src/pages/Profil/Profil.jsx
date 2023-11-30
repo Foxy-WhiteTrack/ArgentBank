@@ -1,31 +1,33 @@
-import React from 'react';
+import { useEffect } from 'react';
 import './Profil.css';
 
 import { Account } from '../../components/Account/Account';
 import accountData from '../../mock/accountData';
 
-import { useSelector } from 'react-redux';
-import UserSelectors from '../../redux/selectors';
 import { useNavigate } from 'react-router-dom';
+import stockData from '../../services/stockData';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Profil() {
-    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-    // extraire le profil utilisateur depuis l'état Redux
-    const userProfile = useSelector((state) => state.user);
 
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { firstName, lastName, isAuthenticated } = useSelector((state) => state.user);
 
-    if (!isAuthenticated) {
-        // Redirection si non connecté
-        navigate('/login');
-    }
+    // useEffect(() => {
+    //     if (!isAuthenticated) {
+    //         navigate('/login');
+    //     }
+    // }, [isAuthenticated, navigate]);
+    const getAuth = stockData.getAuthentication();
 
     return (
         <>
             <main className="main bg-dark">
                 <div className="header2">
                     {/* Utiliser les données du profil */}
-                    <h1>Welcome back<br />{userProfile.firstName} {userProfile.lastName} !</h1>
+                    <h1>Welcome back<br />{firstName} {lastName} !</h1>
                     <button className="edit-button">Edit Name</button>
                 </div>
                 <h2 className="sr-only">Accounts</h2>
@@ -38,7 +40,6 @@ export default function Profil() {
                         description={userAccount.description}
                     />
                 ))}
-
 
             </main>
         </>

@@ -4,7 +4,7 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: {
         isAuthenticated: false,
-        username: null,
+        userName: null,
         firstName: null,
         lastName: null,
     },
@@ -12,11 +12,15 @@ export const userSlice = createSlice({
 
         signIn: (state, action) => {
             state.isAuthenticated = true;
-            state.username = action.payload;
+            state.userName = action.payload.email;
+            state.firstName = action.payload.firstName;
+            state.lastName = action.payload.lastName;
         },
         signOut: (state) => {
             state.isAuthenticated = false;
-            state.username = null;
+            state.userName = null;
+            state.firstName = null;
+            state.lastName = null;
         },
         setFirstName: (state, action) => {
             state.firstName = action.payload;

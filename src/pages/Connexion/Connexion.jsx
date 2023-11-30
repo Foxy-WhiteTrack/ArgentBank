@@ -1,15 +1,26 @@
-import React from 'react';
+import { useEffect } from 'react';
 import './Connexion.css';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 import callsApi from '../../services/callsApi';
-import { setFirstName, setLastName, signIn, signOut } from '../../redux/slice';
+
+import stockData from '../../services/stockData';
+
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../redux/slice';
 
 const Connexion = () => {
     // récupérer les données du formulaire
-    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/profile');
+        }
+    }, [isAuthenticated, navigate]);
 
     const submit = async (event) => {
         event.preventDefault();
@@ -18,28 +29,18 @@ const Connexion = () => {
         const password = event.target.password.value;
 
         const result = await callsApi.login(email, password);
+
         if (result.success) {
             const token = result.token;
-            dispatch(signIn(email));
 
             // Récupérer le profil de l'utilisateur
-            const res = await callsApi.getProfile(token);
+            const res = await callsApi.getUser(token);
             if (res) {
-                dispatch(setFirstName(res.firstName));
-                dispatch(setLastName(res.lastName));
-                dispatch(signIn(email));
+                dispatch(signIn(res));
+                stockData.setAuthentication(email, res.firstName, res.lastName, token);
                 navigate('/profile');
             } else {
                 alert('Erreur lors de la récupération du profil');
-            }
-
-            if (submit) {
-                dispatch(setFirstName(res.firstName));
-                dispatch(setLastName(res.lastName));
-
-
-                // localStorageService.setAuthData(email, token, res.firstName, profileResult.lastName);
-                navigate('/profile');
             }
         } else {
             alert(result.message);

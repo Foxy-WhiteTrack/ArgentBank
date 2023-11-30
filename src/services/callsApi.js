@@ -1,52 +1,60 @@
+import { userSlice } from '../redux/slice';
+
 const BASE_URL = 'http://localhost:3001/api/v1/user';
 
+
 // connexion à l'API
-const fetchApi = async (url, options) => {
-    try {
-        const response = await fetch(url, options);
-        const data = await response.json();
+const fetchApi = {
 
-        if (response.status === 200) {
-            return { success: true, data };
-        } else {
-            return {
-                success: false,
-                message: data.message || 'Erreur lors de la requête API',
-            };
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-        return { success: false, message: 'Erreur lors de la connexion' };
-    }
-};
-
-// Appel des routes de l'API
-const callsApiService = {
-    // Connexion
+    // Permet de se connecter
     async login(email, password) {
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        };
+        try {
+            const response = await fetch(`${BASE_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
 
-        return fetchApi(`${BASE_URL}/login`, options);
+            if (response.status === 200) {
+                return { success: true, token: data.body.token };
+            } else {
+                return {
+                    success: false,
+                    message: data.message || 'Erreur lors de la requête API',
+                };
+            }
+        } catch (error) {
+            console.error('Erreur lors de la requête API:', error);
+            return { success: false, message: 'Erreur lors de la connexion' };
+        }
     },
 
-    // Obtenir le profil
-    async getProfile(token) {
-        const options = {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        };
+    // Obtenir le profil de l'user
+    async getUser(token) {
+        try {
+            const response = await fetch(`${BASE_URL}/profile`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
 
-        return fetchApi(`${BASE_URL}/profile`, options);
+            const data = await response.json();
+
+            if (response.status === 200) {
+                return data.body;
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération du profil:', error);
+            return null;
+        }
     },
 };
 
-export default callsApiService;
+export default fetchApi;
