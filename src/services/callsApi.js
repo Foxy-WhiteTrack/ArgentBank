@@ -80,6 +80,7 @@ const fetchApi = {
             return null;
         }
     },
+
 };
 
 export default fetchApi;

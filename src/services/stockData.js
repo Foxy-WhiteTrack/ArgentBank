@@ -31,3 +31,5 @@ const stockData = {
 };
 
 export default stockData;
+
+// refactoriser et mettre tout dans un stringify

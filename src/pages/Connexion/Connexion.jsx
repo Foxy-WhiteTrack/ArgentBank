@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './Connexion.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -16,6 +16,10 @@ const Connexion = () => {
 
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
+    // version useState()
+    let [email, setEmail] = useState('');
+    let [password, setPassword] = useState('');
+
     useEffect(() => {
         if (isAuthenticated) {
             navigate('/profile');
@@ -25,8 +29,9 @@ const Connexion = () => {
     const submit = async (event) => {
         event.preventDefault();
 
-        const email = event.target.username.value;
-        const password = event.target.password.value;
+        // remplacer ces lignes par des useState
+        email = event.target.username.value;
+        password = event.target.password.value;
 
         const result = await callsApi.login(email, password);
 
@@ -36,6 +41,9 @@ const Connexion = () => {
             // Récupérer le profil de l'utilisateur
             const res = await callsApi.getUser(token);
             if (res) {
+                setEmail(email);
+                setPassword(password);
+
                 dispatch(signIn(res));
                 stockData.setAuthentication(email, res.firstName, res.lastName, token);
                 navigate('/profile');
