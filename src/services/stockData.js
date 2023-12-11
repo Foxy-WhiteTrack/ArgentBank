@@ -1,35 +1,35 @@
-let keys = {
-    isAuthenticated: 'isAuthenticated',
-    email: 'email',
-    firstName: 'firstName',
-    lastName: 'lastName',
-    token: 'token'
-};
-
+// serialiser et deserialiser les donnees
 const stockData = {
     clearData() {
         localStorage.clear();
     },
     setAuthentication(email, firstName, lastName, token) {
-        localStorage.setItem(keys.isAuthenticated, true);
-        localStorage.setItem(keys.email, email);
-        localStorage.setItem(keys.firstName, firstName);
-        localStorage.setItem(keys.lastName, lastName);
-        localStorage.setItem(keys.token, token);
-    },
+        const userData = {
+            isAuthenticated: true,
+            email,
+            firstName,
+            lastName,
+            token
+        };
 
+        const serializedUserData = JSON.stringify(userData);
+        localStorage.setItem('userData', serializedUserData);
+    },
     getAuthentication() {
+        const serializedUserData = localStorage.getItem('userData');
+        if (serializedUserData) {
+            const userData = JSON.parse(serializedUserData);
+            return userData;
+        }
         return {
-            isAuthenticated: JSON.parse(localStorage.getItem(keys.isAuthenticated)),
-            email: localStorage.getItem(keys.email),
-            firstName: localStorage.getItem(keys.firstName),
-            lastName: localStorage.getItem(keys.lastName),
-            token: localStorage.getItem(keys.token)
+            isAuthenticated: false,
+            email: null,
+            firstName: null,
+            lastName: null,
+            token: null
         };
     }
-
 };
 
-export default stockData;
 
-// refactoriser et mettre tout dans un stringify
+export default stockData;

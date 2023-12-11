@@ -140,14 +140,14 @@ paths:
       tags:
         - Transaction Module
       summary: Transaction
-      description: API for Transaction
+      description: API for Transaction (returns a list of transactions)
       parameters:
         - in: body
           name: body
           description: Transaction loading
           required: true
           schema:
-            $ref: '#/definitions/Transaction'
+            $ref: '#/definitions/TransactionsCollection'
       produces:
         - application/json
       responses:
@@ -199,7 +199,7 @@ paths:
           description: Update user profile attributes
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
+            $ref: '#/definitions/Transaction'
       produces:
         - application/json
       responses:
@@ -229,7 +229,7 @@ paths:
           description: Update user profile attributes
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
+            $ref: '#/definitions/Transaction'
       produces:
         - application/json
       responses:
@@ -312,4 +312,7 @@ definitions:
         type: string
       notes:
         type: string
-        
+  TransactionsCollection:
+    type: array
+    items:
+      $ref: '#/definitions/Transaction'   
