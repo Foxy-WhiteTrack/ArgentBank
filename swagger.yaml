@@ -13,8 +13,8 @@ paths:
     post:
       tags:
         - User Module
-      summary: Login
-      description: API for Login
+      summary: API for Login
+      description: allows you to log in using the API
       parameters:
         - in: body
           name: body
@@ -37,8 +37,8 @@ paths:
     post:
       tags:
         - User Module
-      summary: Signup
-      description: API for Signup
+      summary: API for Signup
+      description: allows you to sign up using the API
       parameters:
         - in: body
           name: body
@@ -114,11 +114,18 @@ paths:
           description: Internal Server Error
   /transactions:
     post:
+      security:
+      - Bearer: []
       tags:
         - Transaction Module
       summary: Transaction
       description: API for Transaction
       parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
         - in: body
           name: body
           description: Transaction Payload
@@ -137,11 +144,18 @@ paths:
         '500':
           description: Internal Server Error
     get:
+      security:
+      - Bearer: []
       tags:
         - Transaction Module
-      summary: Transaction
+      summary: retrieve the list of transactions
       description: API for Transaction (returns a list of transactions)
       parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
         - in: body
           name: body
           description: Transaction loading
@@ -161,10 +175,12 @@ paths:
           description: Internal Server Error
   /transactions/{transactionId}:
     get:
+      security:
+      - Bearer: []
       tags:
         - Transaction ID Module
       summary: Find de transaction by ID
-      description: API for Transaction
+      description: return the transaction according to its ID
       operationId: getTransactionById
       responses:
         '200':
@@ -176,6 +192,11 @@ paths:
         '500':
           description: Internal Server Error
     parameters:
+      - in: header
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+        type: string
       - name: transactionId
         in: path
         description: ID of transaction to return
@@ -186,8 +207,8 @@ paths:
         - Bearer: []
       tags:
         - Transaction ID Module
-      summary: User Profile API
-      description: API for updating a user profile
+      summary: API for updating a user profile
+      description: update the transaction according to its ID
       parameters:
         - in: header
           name: transactionId
@@ -216,8 +237,8 @@ paths:
         - Bearer: []
       tags:
         - Transaction ID Module
-      summary: User Profile API
-      description: API for updating a user profile
+      summary: API for updating a user profile
+      description: delete the transaction according to its ID
       parameters:
         - in: header
           name: transactionId
